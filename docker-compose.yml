@@ -1,21 +1,20 @@
 version: '3'
 
 services:
-###> doctrine/doctrine-bundle ###
+  ###> doctrine/doctrine-bundle ###
   database:
-    image: postgres:${POSTGRES_VERSION:-14}-alpine
+    image: mariadb:${MARIADB_VERSION:-latest}
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
       # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     volumes:
-      - db-data:/var/lib/postgresql/data:rw
+      - db-data:/var/lib/mysql/data:rw
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
+      # - ./docker/db/data:/var/lib/mysql/data:rw
 ###< doctrine/doctrine-bundle ###
 
 volumes:
-###> doctrine/doctrine-bundle ###
+  ###> doctrine/doctrine-bundle ###
   db-data:
 ###< doctrine/doctrine-bundle ###
