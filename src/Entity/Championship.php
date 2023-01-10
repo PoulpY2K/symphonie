@@ -22,10 +22,10 @@ class Championship extends Entity
     #[ORM\Column(type: 'string', length: 8)]
     private ?string $code = null;
 
-    #[ORM\OneToMany(mappedBy: 'championship', targetEntity: Team::class)]
+    #[ORM\OneToMany(mappedBy: 'championship', targetEntity: Team::class, cascade: ['persist'])]
     private Collection $teams;
 
-    #[ORM\OneToMany(mappedBy: 'championship', targetEntity: Day::class)]
+    #[ORM\OneToMany(mappedBy: 'championship', targetEntity: Day::class, cascade: ['remove'])]
     private Collection $days;
 
     public function __construct(?array $payload = null)

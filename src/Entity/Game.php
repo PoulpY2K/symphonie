@@ -16,12 +16,10 @@ class Game extends Entity
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'game', targetEntity: Team::class)]
-    #[Groups(['game'])]
+    #[ORM\ManyToOne(targetEntity: Team::class, cascade: ["persist"], inversedBy: 'games')]
     private ?Team $homeTeam = null;
 
-    #[ORM\OneToOne(inversedBy: 'game', targetEntity: Team::class)]
-    #[Groups(['game'])]
+    #[ORM\ManyToOne(targetEntity: Team::class, cascade: ["persist"], inversedBy: 'games')]
     private ?Team $outsiderTeam = null;
 
     #[ORM\Column(type: 'integer')]

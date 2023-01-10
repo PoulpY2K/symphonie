@@ -36,16 +36,17 @@ class Team extends Entity
     #[Ignore]
     private ?Championship $championship = null;
 
-    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Player::class)]
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Player::class, cascade: ['persist', 'remove'])]
     private Collection $players;
 
-    #[ORM\OneToOne(mappedBy: 'team', targetEntity: Game::class)]
-    #[Groups(['team'])]
-    private ?Game $game = null;
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Game::class, cascade: ['remove'])]
+    #[Ignore]
+    private Collection $games;
 
     public function __construct(?array $payload = null)
     {
         $this->players = new ArrayCollection();
+        $this->games = new ArrayCollection();
         parent::__construct($payload);
     }
 
@@ -58,6 +59,7 @@ class Team extends Entity
     {
         if (!$this->players->contains($player)) {
             $this->players->add($player);
+            $player->setTeam($this);
         }
     }
 
@@ -65,6 +67,26 @@ class Team extends Entity
     {
         if ($this->players->contains($player)) {
             $this->players->remove($player);
+            $player->setTeam($this);
+        }
+    }
+
+    public function getGames(): ?Collection
+    {
+        return $this->games;
+    }
+
+    public function addGame(Game $game)
+    {
+        if (!$this->games->contains($game)) {
+            $this->games->add($game);
+        }
+    }
+
+    public function removeGame(Game $game)
+    {
+        if ($this->games->contains($game)) {
+            $this->games->remove($game);
         }
     }
 
@@ -173,24 +195,6 @@ class Team extends Entity
     public function setChampionship(?Championship $championship): Team
     {
         $this->championship = $championship;
-        return $this;
-    }
-
-    /**
-     * @return Game|null
-     */
-    public function getGame(): ?Game
-    {
-        return $this->game;
-    }
-
-    /**
-     * @param Game|null $game
-     * @return Team
-     */
-    public function setGame(?Game $game): Team
-    {
-        $this->game = $game;
         return $this;
     }
 }

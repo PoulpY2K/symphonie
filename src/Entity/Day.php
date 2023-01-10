@@ -20,7 +20,7 @@ class Day extends Entity
     #[ORM\Column(type: 'integer')]
     private ?int $seed = null;
 
-    #[ORM\OneToMany(mappedBy: 'day', targetEntity: Game::class)]
+    #[ORM\OneToMany(mappedBy: 'day', targetEntity: Game::class, cascade: ["persist", "remove"])]
     private Collection $games;
 
     #[ORM\ManyToOne(targetEntity: Championship::class, inversedBy: 'days')]

@@ -22,7 +22,7 @@ class User extends Entity
     #[ORM\Column(type: 'string', unique: true)]
     private ?string $username = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Team::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Team::class, cascade: ['persist', 'remove'])]
     private Collection $teams;
 
     public function __construct(?array $payload = null)
